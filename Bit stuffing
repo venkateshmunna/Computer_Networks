@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+void bitStuffing(char *input, char *output) {
+    int i = 0, j = 0;
+    int count = 0;
+    while (input[i] != '\0') {
+        output[j++] = input[i];
+        if (input[i] == '1') {
+            count++;
+            if (count == 5) {
+                output[j++] = '0';
+                count = 0;
+            }
+        } else {
+            count = 0;
+        }
+        i++;
+    }
+    output[j] = '\0';
+}
+int main() {
+    char input[100], output[200];
+
+    printf("Enter the input bit sequence: ");
+    scanf("%s", input);
+
+    bitStuffing(input, output);
+    printf("Bit stuffed sequence: %s\n", output);
+
+    return 0;
+}
