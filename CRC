@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+void xorOperation(char dividend[], char generator[], int dataLen, int generatorLen) {
+    for (int i = 0; i < generatorLen; i++) {
+        dividend[i] = (dividend[i] == generator[i]) ? '0' : '1';
+    }
+}
+void crc(char data[], char generator[], char remainder[]) {
+    int dataLen = strlen(data);
+    int generatorLen = strlen(generator);
+    char dividend[100];
+    strcpy(dividend, data);
+    for (int i = 0; i < generatorLen - 1; i++) {
+        strcat(dividend, "0");
+    }
+    
+    int totalLen = strlen(dividend);
+    for (int i = 0; i <= totalLen - generatorLen; i++) {
+        if (dividend[i] == '1') {
+            xorOperation(&dividend[i], generator, totalLen, generatorLen);
+        }
+    }
+    strncpy(remainder, &dividend[totalLen - (generatorLen - 1)], generatorLen - 1);
+    remainder[generatorLen - 1] = '\0';
+}
+int main() {
+    char data[100], generator[100], remainder[100];
+    printf("Enter the data: ");
+    scanf("%s", data);
+    printf("Enter the generator polynomial: ");
+    scanf("%s", generator);
+    crc(data, generator, remainder);
+    char transmittedData[200];
+    strcpy(transmittedData, data);
+    strcat(transmittedData, remainder);
+    printf("Remainder (CRC): %s\n", remainder);
+    printf("Transmitted data: %s\n", transmittedData);
+    return 0;
+}
